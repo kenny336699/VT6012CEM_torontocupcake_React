@@ -8,8 +8,6 @@ export const store = configureStore({
     cart: cartReducer,
   },
 });
-store.subscribe(() => {
-  console.log("Store updated:", store.getState());
-});
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

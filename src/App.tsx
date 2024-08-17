@@ -16,7 +16,7 @@ const App: React.FC = () => {
     <Provider store={store}>
       <Router>
         <div className="flex flex-col min-h-screen">
-          <Header /> {/* Add the Header component here */}
+          <Header />
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />

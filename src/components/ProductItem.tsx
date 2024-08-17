@@ -23,16 +23,12 @@ interface ProductItemProps {
 const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state: RootState) => state.cart);
-
   const [quantity, setQuantity] = useState(1);
   const [showAddedToCart, setShowAddedToCart] = useState(false);
-  useEffect(() => {
-    console.log("Current Cart Contents:", cart.items);
-  }, [cart.items]);
+
   const handleAddToCart = () => {
     if (quantity > 0) {
       dispatch(addToCart({ product, quantity }));
-
       setQuantity(1);
       setShowAddedToCart(true);
       setTimeout(() => setShowAddedToCart(false), 3000); // Hide after 3 seconds
@@ -57,7 +53,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
       {showAddedToCart && (
         <div className="absolute inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center p-4">
           <p className="text-lg font-bold mb-2">Item(s) added to My Cart</p>
-          <Link to={""}>
+          <Link to={"/cart"}>
             <Button className="mt-2">View Cart</Button>
           </Link>
           <Button

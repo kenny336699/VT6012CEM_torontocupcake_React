@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { RootState } from "@/store";
 import { removeFromCart, updateCartItemQuantity } from "@/store/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -8,6 +8,15 @@ const Cart: React.FC = () => {
   const cart = useAppSelector((state: RootState) => state.cart);
   const dispatch = useAppDispatch();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    if (selectAll) {
+      setSelectedItems(cart.items.map((item) => item.id));
+    } else if (selectedItems.length === cart.items.length) {
+      setSelectAll(true);
+    }
+  }, [cart.items, selectAll]);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity > 0) {
@@ -30,6 +39,15 @@ const Cart: React.FC = () => {
         ? prev.filter((id) => id !== productId)
         : [...prev, productId]
     );
+  };
+
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      setSelectedItems(cart.items.map((item) => item.id));
+    } else {
+      setSelectedItems([]);
+    }
   };
 
   const totalItems = selectedItems.reduce((sum, id) => {
@@ -75,7 +93,7 @@ const Cart: React.FC = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="w-4/6 mx-auto p-4">
       <div className="bg-pink-200 p-4 mb-4 flex items-center">
         <svg
           className="w-6 h-6 mr-2"
@@ -97,11 +115,18 @@ const Cart: React.FC = () => {
         <table className="w-full">
           <thead>
             <tr className="bg-gray-100">
-              <th className="py-2 px-4 text-left">Select</th>
+              <th className="py-2 px-4 text-left">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                />
+                <span className="ml-2">Select All</span>
+              </th>
               <th className="py-2 px-4 text-left">Product</th>
               <th className="py-2 px-4 text-left">Price</th>
               <th className="py-2 px-4 text-left">Quantity</th>
-              <th className="py-2 px-4 text-left">SUBTOTAL</th>
+              <th className="py-2 px-4 text-left">Sub Total</th>
               <th className="py-2 px-4"></th>
             </tr>
           </thead>

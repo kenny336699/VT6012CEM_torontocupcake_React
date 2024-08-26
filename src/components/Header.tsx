@@ -1,13 +1,35 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import logo1 from "../assets/logo1.png";
+
 const Header = () => {
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="bg-pink-300 p-4">
-      <div className="container mx-auto flex items-center justify-between">
+    <header
+      className={`bg-pink-300 p-4 transition-all duration-300 ${
+        isSticky ? "sticky top-0 z-50 shadow-md" : ""
+      }`}
+    >
+      <div className="w-full px-40 mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <img src={logo1} alt="Toronto Cupcake" className="w-12 h-12" />
           <nav>

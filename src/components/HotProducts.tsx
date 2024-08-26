@@ -6,8 +6,8 @@ import { ProductType } from "@/store/productSlice";
 
 const HotProducts: React.FC = () => {
   const products = useSelector((state: RootState) =>
-    state.products.products.filter(
-      (product) => (product.types & ProductType.Hot) !== 0
+    state.products.products.filter((product) =>
+      product.types.includes(ProductType.Hot)
     )
   );
 
